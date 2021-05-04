@@ -183,6 +183,9 @@ class Basket(Sprite):
     def reappear_2(self):
         self.x = 25
 
+    def set_next_direction(self, direction):
+        self.next_direction = direction
+
 
 class BasketGame(GameApp):
     def init_game(self):
@@ -192,6 +195,10 @@ class BasketGame(GameApp):
         self.score = 0
         self.score_text = Text(self, 'Score: 0', 100, 40)
         self.fruits = []
+
+        self.command = {'Left': self.get_next_direction_function(self.basket, BASKET_LEFT),
+                        'Right': self.get_next_direction_function(self.basket, BASKET_RIGHT)
+                        }
 
     def update_score(self):
         self.score_text.set_text('Score: ' + str(self.score))
@@ -245,10 +252,14 @@ class BasketGame(GameApp):
         self.fruits = self.update_and_filter_deleted(self.fruits)
 
     def on_key_pressed(self, event):
-        if event.keysym == 'Left':
-            self.basket.direction = BASKET_LEFT
-        elif event.keysym == 'Right':
-            self.basket.direction = BASKET_RIGHT
+        ch = event.char.upper()
+        if ch in self.command:
+            self.command[ch]()
+
+    def get_next_direction_function(self, basket, next_direction):
+        def f():
+            basket.set_next_direction(next_direction)
+        return f
     
 
 if __name__ == "__main__":
