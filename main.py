@@ -22,6 +22,22 @@ class SlowFruit(Sprite):
         if self.y > CANVAS_WIDTH + 30:
             self.to_be_deleted = True
 
+    def is_out_of_screen_left(self):
+        if self.x < 20:
+            return True
+        return False
+
+    def is_out_of_screen_right(self):
+        if self.x > CANVAS_WIDTH - 20:
+            return True
+        return False
+
+    def reappear_1(self):
+        self.x = CANVAS_WIDTH - 20
+
+    def reappear_2(self):
+        self.x = 20
+
 
 class FastFruit(Sprite):
     fruit_type = 'fast'
@@ -36,6 +52,22 @@ class FastFruit(Sprite):
 
         if self.y > CANVAS_WIDTH + 30:
             self.to_be_deleted = True
+
+    def is_out_of_screen_left(self):
+        if self.x < 20:
+            return True
+        return False
+
+    def is_out_of_screen_right(self):
+        if self.x > CANVAS_WIDTH - 20:
+            return True
+        return False
+
+    def reappear_1(self):
+        self.x = CANVAS_WIDTH - 20
+
+    def reappear_2(self):
+        self.x = 20
 
 
 class SlideFruit(Sprite):
@@ -54,6 +86,22 @@ class SlideFruit(Sprite):
         if self.y > CANVAS_WIDTH + 30:
             self.to_be_deleted = True
 
+    def is_out_of_screen_left(self):
+        if self.x < 20:
+            return True
+        return False
+
+    def is_out_of_screen_right(self):
+        if self.x > CANVAS_WIDTH - 20:
+            return True
+        return False
+
+    def reappear_1(self):
+        self.x = CANVAS_WIDTH - 20
+
+    def reappear_2(self):
+        self.x = 20
+
 
 class CurvyFruit(Sprite):
     fruit_type = 'curvy'
@@ -71,6 +119,22 @@ class CurvyFruit(Sprite):
 
         if self.y > CANVAS_WIDTH + 30:
             self.to_be_deleted = True
+
+    def is_out_of_screen_left(self):
+        if self.x < 20:
+            return True
+        return False
+
+    def is_out_of_screen_right(self):
+        if self.x > CANVAS_WIDTH - 20:
+            return True
+        return False
+
+    def reappear_1(self):
+        self.x = CANVAS_WIDTH - 20
+
+    def reappear_2(self):
+        self.x = 20
 
 
 class Basket(Sprite):
@@ -102,7 +166,6 @@ class Basket(Sprite):
                 fruit.to_be_deleted = True
                 self.app.score += 3
                 self.app.update_score()
-
 
     def is_out_of_screen_left(self):
         if self.x < 25:
@@ -161,6 +224,13 @@ class BasketGame(GameApp):
                 e.delete()
             else:
                 new_list.append(e)
+
+        for fruit in self.fruits:
+            if fruit.is_out_of_screen_left():
+                fruit.reappear_1()
+            if fruit.is_out_of_screen_right():
+                fruit.reappear_2()
+
         return new_list
 
     def post_update(self):
