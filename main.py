@@ -85,6 +85,22 @@ class Basket(Sprite):
             self.app.score += 1
             self.app.update_score()
 
+    def is_out_of_screen_left(self):
+        if self.x < 25:
+            return True
+        return False
+
+    def is_out_of_screen_right(self):
+        if self.x > CANVAS_WIDTH - 25:
+            return True
+        return False
+
+    def reappear_1(self):
+        self.x = CANVAS_WIDTH - 25
+
+    def reappear_2(self):
+        self.x = 25
+
 
 class BasketGame(GameApp):
     def init_game(self):
@@ -130,6 +146,10 @@ class BasketGame(GameApp):
 
     def post_update(self):
         self.process_collisions()
+        if self.basket.is_out_of_screen_left():
+            self.basket.reappear_1()
+        if self.basket.is_out_of_screen_right():
+            self.basket.reappear_2()
 
         self.random_fruits()
 
