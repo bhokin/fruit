@@ -7,7 +7,10 @@ from gamelib import Sprite, GameApp, Text
 
 from consts import *
 
+
 class SlowFruit(Sprite):
+    fruit_type = 'slow'
+
     def __init__(self, app, x, y):
         super().__init__(app, 'images/apple.png', x, y)
 
@@ -21,6 +24,8 @@ class SlowFruit(Sprite):
 
 
 class FastFruit(Sprite):
+    fruit_type = 'fast'
+
     def __init__(self, app, x, y):
         super().__init__(app, 'images/banana.png', x, y)
 
@@ -34,11 +39,13 @@ class FastFruit(Sprite):
 
 
 class SlideFruit(Sprite):
+    fruit_type = 'slide'
+
     def __init__(self, app, x, y):
         super().__init__(app, 'images/cherry.png', x, y)
 
         self.app = app
-        self.direction = randint(0,1)*2 - 1
+        self.direction = randint(0, 1)*2 - 1
 
     def update(self):
         self.y += FRUIT_FAST_SPEED
@@ -49,6 +56,8 @@ class SlideFruit(Sprite):
 
 
 class CurvyFruit(Sprite):
+    fruit_type = 'curvy'
+
     def __init__(self, app, x, y):
         super().__init__(app, 'images/pear.png', x, y)
 
@@ -81,9 +90,19 @@ class Basket(Sprite):
 
     def check_collision(self, fruit):
         if self.distance_to(fruit) <= BASKET_CATCH_DISTANCE:
-            fruit.to_be_deleted = True
-            self.app.score += 1
-            self.app.update_score()
+            if fruit.fruit_type == 'slow':
+                fruit.to_be_deleted = True
+                self.app.score += 1
+                self.app.update_score()
+            elif fruit.fruit_type == 'fast' or fruit.fruit_type == 'slide':
+                fruit.to_be_deleted = True
+                self.app.score += 2
+                self.app.update_score()
+            elif fruit.fruit_type == 'curvy':
+                fruit.to_be_deleted = True
+                self.app.score += 3
+                self.app.update_score()
+
 
     def is_out_of_screen_left(self):
         if self.x < 25:
